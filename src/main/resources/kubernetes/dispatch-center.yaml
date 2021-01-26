@@ -50,7 +50,7 @@ spec:
       containers:
       - name: dispatch-center
         image: openjdk:8-jdk
-          command: [ "java", "-jar", "/jar/output/iot-platform.jar", "dispatch-center" ]
+          command: ["java", "-jar", "/jar/output/iot-platform.jar", "dispatch-center"]
         volumeMounts:
         - name: jar
           mountPath: /jar
@@ -63,3 +63,5 @@ spec:
           value: "USR"
         - name: QUEUE
           value: "QUEUE"
+        - name: RABBITMQ_TOPIC_SELECTOR_KEY
+          value: ".*"

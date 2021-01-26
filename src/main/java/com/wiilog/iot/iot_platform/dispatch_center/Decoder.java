@@ -1,11 +1,6 @@
-package dispatch_center;
+package com.wiilog.iot.iot_platform.dispatch_center;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class Decoder {
 

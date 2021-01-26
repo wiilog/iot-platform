@@ -1,13 +1,13 @@
-package utils;
+package com.wiilog.iot.iot_platform.utils.rabbitmq;
 
 import com.rabbitmq.client.Delivery;
-import utils.log.LogFormatter;
-import utils.log.LogType;
+import com.wiilog.iot.iot_platform.utils.log.LogFormatter;
+import com.wiilog.iot.iot_platform.utils.log.LogType;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public abstract class MessagePipe {
+public abstract class RabbitMQMessagePipe {
 
     protected String message;
     protected Delivery delivery;

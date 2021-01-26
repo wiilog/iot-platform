@@ -1,4 +1,4 @@
-package utils.log;
+package com.wiilog.iot.iot_platform.utils.log;
 
 public enum LogType {
     INFO("INFO"),

@@ -1,17 +1,18 @@
-package worker;
+package com.wiilog.iot.iot_platform.worker;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
+import com.wiilog.iot.iot_platform.Constant;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
-import utils.ConnectionManager;
-import utils.log.LogFormatter;
-import utils.log.LogType;
-import utils.MessagePipe;
+import com.wiilog.iot.iot_platform.utils.rabbitmq.RabbitMQConnectionManager;
+import com.wiilog.iot.iot_platform.utils.log.LogFormatter;
+import com.wiilog.iot.iot_platform.utils.log.LogType;
+import com.wiilog.iot.iot_platform.utils.rabbitmq.RabbitMQMessagePipe;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
-public class Worker extends MessagePipe {
+public class Worker extends RabbitMQMessagePipe {
 
     private final String ERROR_QUEUE = "error-";
     private final int MAX_RETRIES = 5;
@@ -34,11 +35,11 @@ public class Worker extends MessagePipe {
     private ResponseHandler httpResponseHandler;
 
     public Worker() throws IOException, TimeoutException {
-        this.channel = ConnectionManager.initConnection().createChannel();
+        this.channel = RabbitMQConnectionManager.initConnection().createChannel();
         this.channel.confirmSelect();
 
-        this.appropriateAPI = System.getenv("API_URL");
-        this.appropriateQueue = System.getenv("QUEUE");
+        this.appropriateAPI = System.getenv(Constant.IOT_ENDPOINT);
+        this.appropriateQueue = System.getenv(Constant.RABBITMQ_QUEUE);
 
         this.httpClient = HttpClients.createDefault();
         this.httpPost = new HttpPost(this.appropriateAPI);

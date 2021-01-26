@@ -84,7 +84,9 @@ spec:
               value: "USR"
             - name: QUEUE
               value: "QUEUE"
-            - name: API_URL
-              value: "API_URL"
+            - name: HTTP_ENDPOINT_PATH
+              value: "HTTP_ENDPOINT_PATH"
             - name: DEVICES_TO_GROUP
               value: "DEVICES_TO_GROUP"
+            - name: RABBITMQ_TOPIC_SELECTOR_KEY
+              value: ".*"
