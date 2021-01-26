@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: com.wiilog.iot.iot_platform.worker-<HASH>-deployment
+  name: worker-<HASH>-deployment
   namespace: rabbitmq
   labels:
-    app: com.wiilog.iot.iot_platform.worker
+    app: worker
 spec:
   replicas: 2
   strategy:
@@ -14,11 +14,11 @@ spec:
       maxUnavailable: 25%
   selector:
     matchLabels:
-      app: com.wiilog.iot.iot_platform.worker-<HASH>
+      app: worker-<HASH>
   template:
     metadata:
       labels:
-        app: com.wiilog.iot.iot_platform.worker-<HASH>
+        app: worker-<HASH>
     spec:
       imagePullSecrets:
         - name: regcred
@@ -48,9 +48,9 @@ spec:
         - mountPath: /jar
           name: jar
       containers:
-      - name: com.wiilog.iot.iot_platform.worker-<HASH>
+      - name: worker-<HASH>
         image: openjdk:8-jdk
-          command: [ "java", "-jar", "/jar/output/iot-platform.jar", "com.wiilog.iot.iot_platform.worker"]
+          command: [ "java", "-jar", "/jar/output/iot-platform.jar", "worker"]
         volumeMounts:
         - name: jar
           mountPath: /jar

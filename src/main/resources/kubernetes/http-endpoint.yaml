@@ -71,7 +71,7 @@ spec:
       containers:
         - name: http-endpoint
           image: openjdk:8-jdk
-          command: ["java", "-jar", "/jar/output/iot-platform.jar", "api-endpoint"]
+          command: ["java", "-jar", "/jar/output/iot-platform.jar", "http-endpoint"]
           volumeMounts:
             - name: jar
               mountPath: /jar
