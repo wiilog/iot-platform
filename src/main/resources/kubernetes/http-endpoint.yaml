@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: internet-api
+  namespace: rabbitmq
+  labels:
+    app: internet-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+    - port: 443
+      targetPort: 443
+      protocol: TCP
+      name: https
+  selector:
+    app: internet-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: internet-api-deployment
+  namespace: rabbitmq
+  labels:
+    app: internet-api
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: internet-api
+  template:
+    metadata:
+      labels:
+        app: internet-api
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+        - name: jar
+          emptyDir: {}
+      initContainers:
+        - name: git-cloner
+          image: alpine/git
+          args:
+            - clone
+            - --single-branch
+            - --
+            - https://github.com/Wiilog/InternetAPI.git
+            - /jar
+          volumeMounts:
+            - mountPath: /jar
+              name: jar
+        - name: maven
+          image: maven:3.3-jdk-8
+          args:
+            - mvn
+            - -f
+            - /jar/
+            - package
+          volumeMounts:
+            - mountPath: /jar
+              name: jar
+      containers:
+        - name: internet-api
+          image: openjdk:8-jdk
+          command: ["java", "-jar", "/jar/src/main/Kubernetes/InternetAPI.jar"]
+          volumeMounts:
+            - name: jar
+              mountPath: /jar
+          env:
+            - name: RABBITMQ_IP
+              value: "IP"
+            - name: RABBITMQ_PWD
+              value: "PWD"
+            - name: RABBITMQ_USER
+              value: "USR"
+            - name: QUEUE
+              value: "QUEUE"
+            - name: API_URL
+              value: "API_URL"
+            - name: DEVICES_TO_GROUP
+              value: "DEVICES_TO_GROUP"

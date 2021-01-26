@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-<HASH>-deployment
+  namespace: rabbitmq
+  labels:
+    app: rabbitmq-worker
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: worker-<HASH>
+  template:
+    metadata:
+      labels:
+        app: worker-<HASH>
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      volumes:
+      - name: jar
+        emptyDir: {}
+      initContainers:
+      - name: git-cloner
+        image: alpine/git
+        args:
+        - clone
+        - --single-branch
+        - --
+        - https://github.com/Wiilog/Worker.git
+        - /jar
+        volumeMounts:
+        - mountPath: /jar
+          name: jar
+      - name: maven
+        image: maven:3.3-jdk-8
+        args:
+        - mvn
+        - -f
+        - /jar/
+        - package
+        volumeMounts:
+        - mountPath: /jar
+          name: jar
+      containers:
+      - name: worker-<HASH>
+        image: openjdk:8-jdk
+        command: ["java", "-jar", "/jar/src/main/Kubernetes/Worker.jar"]
+        volumeMounts:
+        - name: jar
+          mountPath: /jar
+        env:
+        - name: RABBITMQ_IP
+          value: "IP"
+        - name: RABBITMQ_PWD
+          value: "PWD"
+        - name: RABBITMQ_USER
+          value: "USR"
+        - name: QUEUE
+          value: "QUEUE"
+        - name: API_URL
+          value: "URL"
+        - name: IOT_AUTH_TOKEN
+          value: "IOT_AUTH_TOKEN"
