@@ -50,7 +50,7 @@ spec:
       containers:
       - name: worker-<HASH>
         image: openjdk:8-jdk
-          command: [ "java", "-jar", "/jar/output/iot-platform.jar", "worker"]
+        command: [ "java", "-jar", "/jar/output/iot-platform.jar", "worker"]
         volumeMounts:
         - name: jar
           mountPath: /jar
