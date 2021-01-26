@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: internet-api
+  name: http-endpoint
   namespace: rabbitmq
   labels:
-    app: internet-api
+    app: http-endpoint
 spec:
   type: LoadBalancer
   ports:
@@ -17,15 +17,15 @@ spec:
       protocol: TCP
       name: https
   selector:
-    app: internet-api
+    app: http-endpoint
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: internet-api-deployment
+  name: http-endpoint-deployment
   namespace: rabbitmq
   labels:
-    app: internet-api
+    app: http-endpoint
 spec:
   replicas: 2
   strategy:
@@ -35,11 +35,11 @@ spec:
       maxUnavailable: 25%
   selector:
     matchLabels:
-      app: internet-api
+      app: http-endpoint
   template:
     metadata:
       labels:
-        app: internet-api
+        app: http-endpoint
     spec:
       imagePullSecrets:
         - name: regcred
@@ -53,7 +53,7 @@ spec:
             - clone
             - --single-branch
             - --
-            - https://github.com/Wiilog/InternetAPI.git
+            - https://github.com/wiilog/iot-platform.git
             - /jar
           volumeMounts:
             - mountPath: /jar
@@ -69,9 +69,9 @@ spec:
             - mountPath: /jar
               name: jar
       containers:
-        - name: internet-api
+        - name: http-endpoint
           image: openjdk:8-jdk
-          command: ["java", "-jar", "/jar/src/main/Kubernetes/InternetAPI.jar"]
+          command: ["java", "-jar", "/jar/output/iot-platform.jar", "api-endpoint"]
           volumeMounts:
             - name: jar
               mountPath: /jar

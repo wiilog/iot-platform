@@ -4,7 +4,7 @@ metadata:
   name: worker-<HASH>-deployment
   namespace: rabbitmq
   labels:
-    app: rabbitmq-worker
+    app: worker
 spec:
   replicas: 2
   strategy:
@@ -32,7 +32,7 @@ spec:
         - clone
         - --single-branch
         - --
-        - https://github.com/Wiilog/Worker.git
+        - https://github.com/wiilog/iot-platform.git
         - /jar
         volumeMounts:
         - mountPath: /jar
@@ -50,7 +50,7 @@ spec:
       containers:
       - name: worker-<HASH>
         image: openjdk:8-jdk
-        command: ["java", "-jar", "/jar/src/main/Kubernetes/Worker.jar"]
+          command: [ "java", "-jar", "/jar/output/iot-platform.jar", "worker"]
         volumeMounts:
         - name: jar
           mountPath: /jar
