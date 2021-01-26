@@ -14,7 +14,7 @@ public final class Constant {
 
     public static final String RABBITMQ_IP = "RABBITMQ_IP";
     public static final String RABBITMQ_USER = "RABBITMQ_USER";
-    public static final String RABBITMQ_PWD = "RABBITMQ_USER";
+    public static final String RABBITMQ_PWD = "RABBITMQ_PWD";
     public static final String RABBITMQ_GENERAL_TOPIC = "amq.topic";
     public static final String RABBITMQ_DEVICE_PROPERTIES_LABEL = "device_properties";
     public static final String RABBITMQ_DEVICE_SELECTOR_LABEL = "group";
