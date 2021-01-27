@@ -18,5 +18,5 @@ public final class Constant {
     public static final String RABBITMQ_GENERAL_TOPIC = "amq.topic";
     public static final String RABBITMQ_DEVICE_PROPERTIES_LABEL = "device_properties";
     public static final String RABBITMQ_DEVICE_SELECTOR_LABEL = "group";
-    public static final String RABBITMQ_TOPIC_SELECTOR_KEY = ".*";
+    public static final String RABBITMQ_TOPIC_SELECTOR_KEY = "RABBITMQ_TOPIC_SELECTOR_KEY";
 }
